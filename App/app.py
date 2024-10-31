@@ -61,10 +61,7 @@ def main():
     }
     </style>
     '''
-    st.markdown(page_bg_img, unsafe_allow_html=True)
-
-    with open("../Assets/style.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+  
 
     st.title("✨ Turn Your Photos into Cartoon Art!")
     st.markdown("Transform your photos with our Cartoonizer tool. Upload a photo to generate a cartoon-style, black-and-white image with striking outlines and minimal noise.")
