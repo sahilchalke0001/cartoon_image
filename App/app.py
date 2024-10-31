@@ -63,7 +63,7 @@ def main():
     '''
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-    with open("./Assets/style.css") as f:
+    with open("../Assets/style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     st.title("✨ Turn Your Photos into Cartoon Art!")
