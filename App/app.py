@@ -1,4 +1,4 @@
-# import pickle
+import pickle
 import time
 import math
 import cv2
@@ -61,7 +61,7 @@ def main():
     }
     </style>
     '''
-  
+    st.markdown(page_bg_img, unsafe_allow_html=True)
 
     st.title("✨ Turn Your Photos into Cartoon Art!")
     st.markdown("Transform your photos with our Cartoonizer tool. Upload a photo to generate a cartoon-style, black-and-white image with striking outlines and minimal noise.")
@@ -69,22 +69,25 @@ def main():
     uploaded_file = st.file_uploader("Upload an image to get started (JPEG or PNG)...", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-        img_rgb = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+        try:
+            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+            img_rgb = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+            cartoonizer = Cartoonizer()
+            result_image = cartoonizer.process_image(img_rgb)
 
-        cartoonizer = Cartoonizer()
-        result_image = cartoonizer.process_image(img_rgb)
+            st.image(result_image, channels="GRAY", caption="Cartoon-styled Image")
 
-        st.image(result_image, channels="GRAY", caption="Cartoon-styled Image")
-
-        _, result_image_encoded = cv2.imencode('.png', result_image)
-        timestamp = math.floor(time.time()*1000000)
-        st.download_button(
-            label="Download Cartoon-styled Image",
-            data=result_image_encoded.tobytes(),
-            file_name=f'{timestamp}.png',
-            mime="image/png"
-        )
+            _, result_image_encoded = cv2.imencode('.png', result_image)
+            timestamp = math.floor(time.time() * 1000000)
+            st.download_button(
+                label="Download Cartoon-styled Image",
+                data=result_image_encoded.tobytes(),
+                file_name=f'{timestamp}.png',
+                mime="image/png"
+            )
+        except Exception as e:
+            st.error("There was an error processing the image. Please try a different image.")
+            st.error(f"Error details: {e}")
 
 if __name__ == '__main__':
     main()
